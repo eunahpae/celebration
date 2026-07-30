@@ -371,11 +371,13 @@ canvas {
     align-items: start;
     text-align: center;
     padding-top: 8vh;
-    row-gap: 32px;
+    row-gap: 16px;
   }
   .name { justify-content: center; }
   .msg { margin-left: auto; margin-right: auto; }
-  .cake-wrap { margin-top: 12px; padding-bottom: 16vh; }
+  /* 촛불(.candles)이 .cake 박스 위로 -46px, 불꽃(.flame)이 거기서 다시 -20px 튀어나오므로
+     겹침을 막으려면 위쪽 여백이 최소 66px보다 커야 한다 */
+  .cake-wrap { margin-top: 80px; padding-bottom: 16vh; }
 }
 </style>
 </head>
