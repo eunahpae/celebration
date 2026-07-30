@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>사랑해요, 노상혁 💕</title>
+<title>조각미남 노상혁 💎</title>
 <style>
   :root { color-scheme: light; }
   * { box-sizing: border-box; }
@@ -14,60 +14,109 @@
     align-items: center;
     justify-content: center;
     font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-    background: linear-gradient(160deg, #ffe0ec 0%, #ffd1e3 45%, #ffb8d6 100%);
+    background: linear-gradient(60deg, #ff9a9e, #fecfef, #a1c4fd, #fbc2eb, #ffdde1, #ff9a9e);
+    background-size: 400% 400%;
+    animation: rainbow 8s ease infinite;
     overflow: hidden;
     position: relative;
+  }
+  @keyframes rainbow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
   .sparkle {
     position: absolute;
     bottom: -10%;
-    font-size: 20px;
-    opacity: 0.85;
-    animation: float 6s linear infinite;
+    font-size: 22px;
+    opacity: 0.9;
+    animation: float 5s linear infinite;
   }
-  .sparkle:nth-child(1) { left: 6%;  animation-delay: 0s;   font-size: 16px; }
-  .sparkle:nth-child(2) { left: 20%; animation-delay: 1.2s; font-size: 24px; }
-  .sparkle:nth-child(3) { left: 80%; animation-delay: 0.6s; font-size: 18px; }
-  .sparkle:nth-child(4) { left: 92%; animation-delay: 2s;   font-size: 22px; }
-  .sparkle:nth-child(5) { left: 50%; animation-delay: 2.8s; font-size: 20px; }
-  .sparkle:nth-child(6) { left: 65%; animation-delay: 1.6s; font-size: 16px; }
+  .sparkle:nth-child(1) { left: 4%;  animation-delay: 0s;   font-size: 20px; }
+  .sparkle:nth-child(2) { left: 15%; animation-delay: 1s;   font-size: 30px; }
+  .sparkle:nth-child(3) { left: 28%; animation-delay: 0.4s; font-size: 18px; }
+  .sparkle:nth-child(4) { left: 72%; animation-delay: 1.6s; font-size: 26px; }
+  .sparkle:nth-child(5) { left: 85%; animation-delay: 0.8s; font-size: 22px; }
+  .sparkle:nth-child(6) { left: 95%; animation-delay: 2.2s; font-size: 28px; }
+  .sparkle:nth-child(7) { left: 50%; animation-delay: 1.3s; font-size: 20px; }
+  .sparkle:nth-child(8) { left: 60%; animation-delay: 2.6s; font-size: 24px; }
   @keyframes float {
     0%   { transform: translateY(0) rotate(0deg);   opacity: 0; }
-    10%  { opacity: 0.9; }
-    90%  { opacity: 0.6; }
-    100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.7; }
+    100% { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
   }
 
   .placard-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
+    z-index: 2;
   }
 
   .placard {
     position: relative;
-    width: min(88vw, 400px);
+    width: min(90vw, 420px);
     background: #fffdfb;
-    border-radius: 24px;
-    padding: 40px 24px 34px;
+    border-radius: 26px;
+    padding: 46px 22px 36px;
     text-align: center;
-    box-shadow: 0 24px 55px rgba(210, 60, 120, 0.3);
-    border: 4px dashed #ff8fb4;
-    animation: wiggle 3.2s ease-in-out infinite;
+    box-shadow: 0 0 0 6px #fff, 0 0 0 10px #ff5c8d, 0 24px 60px rgba(210, 60, 120, 0.45);
+    border: none;
+    animation: wiggle 2.4s ease-in-out infinite;
   }
   @keyframes wiggle {
-    0%, 100% { transform: rotate(-1.2deg); }
-    50%      { transform: rotate(1.2deg); }
+    0%, 100% { transform: rotate(-2deg) scale(1); }
+    50%      { transform: rotate(2deg) scale(1.02); }
+  }
+
+  .stamp {
+    position: absolute;
+    top: -26px;
+    right: -18px;
+    background: #ffde59;
+    color: #b3450a;
+    font-weight: 900;
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 50%;
+    border: 3px dashed #ff5c8d;
+    transform: rotate(15deg);
+    animation: stampPulse 1.2s ease-in-out infinite;
+    line-height: 1.2;
+    width: 74px;
+  }
+  @keyframes stampPulse {
+    0%, 100% { transform: rotate(15deg) scale(1); }
+    50%      { transform: rotate(15deg) scale(1.12); }
   }
 
   .stick {
-    width: 14px;
+    width: 16px;
     height: 90px;
     background: linear-gradient(#e8b98f, #c98a54);
     border-radius: 0 0 8px 8px;
     margin-top: -6px;
     box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+  }
+
+  .badge-line {
+    font-size: clamp(15px, 4vw, 18px);
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(90deg, #ff5c8d, #ff9a3c);
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(255, 92, 141, 0.4);
+    animation: shake 1.6s ease-in-out infinite;
+  }
+  @keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    25%      { transform: rotate(-3deg); }
+    75%      { transform: rotate(3deg); }
   }
 
   .kya {
@@ -78,52 +127,75 @@
   }
 
   .main-line {
-    font-size: clamp(30px, 9vw, 44px);
+    font-size: clamp(32px, 9.5vw, 46px);
     font-weight: 900;
-    color: #e0357f;
+    background: linear-gradient(90deg, #ff5c8d, #a15cff, #ff9a3c);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: glow 2s linear infinite;
     line-height: 1.3;
     margin: 8px 0;
-    text-shadow: 2px 2px 0 #ffe1ec;
+  }
+  @keyframes glow {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
   }
 
   .sub-line {
-    font-size: clamp(16px, 4.5vw, 20px);
-    color: #b3457a;
-    font-weight: 600;
+    font-size: clamp(15px, 4.2vw, 19px);
+    color: #7a3a8a;
+    font-weight: 700;
     margin-top: 10px;
+  }
+
+  .funny-line {
+    font-size: clamp(13px, 3.6vw, 16px);
+    color: #ff5c8d;
+    font-weight: 700;
+    margin-top: 8px;
+    border-top: 2px dotted #ffc2d9;
+    padding-top: 10px;
   }
 
   .hearts-row {
     margin-top: 16px;
-    font-size: clamp(20px, 5vw, 26px);
+    font-size: clamp(22px, 5.5vw, 28px);
   }
   .hearts-row span {
     display: inline-block;
-    animation: pulse 1.4s ease-in-out infinite;
+    animation: pulse 1.2s ease-in-out infinite;
   }
-  .hearts-row span:nth-child(2) { animation-delay: 0.2s; }
-  .hearts-row span:nth-child(3) { animation-delay: 0.4s; }
+  .hearts-row span:nth-child(2) { animation-delay: 0.15s; }
+  .hearts-row span:nth-child(3) { animation-delay: 0.3s; }
+  .hearts-row span:nth-child(4) { animation-delay: 0.45s; }
   @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50%      { transform: scale(1.25); }
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50%      { transform: scale(1.3) rotate(10deg); }
   }
 </style>
 </head>
 <body>
 
   <span class="sparkle">✨</span>
+  <span class="sparkle">💎</span>
+  <span class="sparkle">👑</span>
   <span class="sparkle">💗</span>
-  <span class="sparkle">✨</span>
-  <span class="sparkle">💕</span>
   <span class="sparkle">⭐</span>
+  <span class="sparkle">🔥</span>
+  <span class="sparkle">✨</span>
   <span class="sparkle">💖</span>
 
   <div class="placard-wrap">
     <div class="placard">
-      <div class="kya">꺄~~ 보고싶어요</div>
-      <div class="main-line">사랑해요,<br>노상혁</div>
-      <div class="sub-line">오늘도 응원해요 🐻💗</div>
-      <div class="hearts-row"><span>💕</span><span>💖</span><span>💕</span></div>
+      <div class="stamp">국보<br>1호<br>인증</div>
+      <div class="badge-line">⚠️ 잘생김 과다복용 주의 ⚠️</div>
+      <div class="kya">꺄~~ 조각이야 사람이야?!</div>
+      <div class="main-line">조각미남<br>노상혁</div>
+      <div class="sub-line">심장아 나대지마... 🫀💥</div>
+      <div class="funny-line">얼굴천재 각도 없음 · 360도 무결점 · 국가대표급 비주얼</div>
+      <div class="hearts-row"><span>💘</span><span>👑</span><span>💎</span><span>🔥</span></div>
     </div>
     <div class="stick"></div>
   </div>
