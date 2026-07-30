@@ -274,6 +274,8 @@ canvas {
   left: 50%; bottom: 8vh;
   transform: translateX(-50%) translateY(20px);
   z-index: 7;
+  width: min(90vw, 520px);
+  text-align: center;
   font-family: 'Fraunces', serif;
   font-style: italic;
   font-size: clamp(20px, 3vw, 32px);
@@ -361,15 +363,19 @@ canvas {
    반응형 — 모바일 대응
    ============================================ */
 @media (max-width: 760px) {
-  html, body { overflow-y: auto; }
+  html, body { overflow-y: auto; height: auto; }
   .stage {
     grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100dvh;
+    align-items: start;
     text-align: center;
     padding-top: 8vh;
+    row-gap: 32px;
   }
   .name { justify-content: center; }
   .msg { margin-left: auto; margin-right: auto; }
-  .cake-wrap { margin-top: 12px; padding-bottom: 12vh; }
+  .cake-wrap { margin-top: 12px; padding-bottom: 16vh; }
 }
 </style>
 </head>
