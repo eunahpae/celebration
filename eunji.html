@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 유은지</title>
+<!-- 폰트 로드: 디스플레이용 Fraunces + 한글 디스플레이 Gasoek One + 본문 Gowun Dodum -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,300..700&family=Gasoek+One&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   컬러 시스템 — 딥 나이트 배경 + 골드/코랄 포인트
+   ============================================ */
+:root {
+  --color-bg:      #0b0a14;
+  --color-surface: #16142a;
+  --color-text:    #d8d4e8;
+  --color-heading: #fff6e8;
+  --color-accent:  #ffb64d;   /* 골드 */
+  --color-accent2: #ff5e7e;   /* 코랄 핑크 */
+  --color-accent3: #6ee7ff;   /* 아쿠아 */
+  --color-muted:   #8b86a8;
+  --color-border:  rgba(255, 182, 77, 0.25);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Gowun Dodum', sans-serif;
+  color: var(--color-text);
+  /* 레이어드 그라데이션 배경 — 밤하늘 느낌 */
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(255, 94, 126, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 15%, rgba(110, 231, 255, 0.10) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 182, 77, 0.06) 0%, transparent 60%),
+    var(--color-bg);
+}
+
+/* ============================================
+   캔버스 레이어 (별 / 컨페티 / 폭죽)
+   ============================================ */
+canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+#stars    { z-index: 0; }
+#confetti { z-index: 5; }
+#firework { z-index: 6; }
+
+/* ============================================
+   메인 스테이지
+   ============================================ */
+.stage {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;   /* 비대칭 레이아웃 */
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(20px, 5vw, 60px);
+  gap: clamp(16px, 4vw, 48px);
+}
+
+/* ---------- 좌측: 타이포 영역 ---------- */
+.copy .eyebrow {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: clamp(16px, 2.2vw, 24px);
+  letter-spacing: 0.18em;
+  color: var(--color-accent3);
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+.copy h1 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(44px, 8vw, 104px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  margin: 12px 0 20px;
+  /* 흐르는 골드 그라데이션 텍스트 */
+  background: linear-gradient(110deg,
+    var(--color-accent) 0%, #ffe9c2 25%, var(--color-accent2) 50%,
+    #ffe9c2 75%, var(--color-accent) 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+
+/* 이름 — 한 글자씩 등장 */
+.name {
+  font-family: 'Gasoek One', sans-serif;
+  font-size: clamp(40px, 6.5vw, 84px);
+  color: var(--color-heading);
+  display: flex;
+  gap: 0.08em;
+}
+.name span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px) rotate(6deg);
+  animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  text-shadow: 0 0 30px rgba(255, 182, 77, 0.45);
+}
+.name span:nth-child(1) { animation-delay: 0.8s; }
+.name span:nth-child(2) { animation-delay: 1.0s; }
+.name span:nth-child(3) { animation-delay: 1.2s; }
+
+.msg {
+  margin-top: 28px;
+  font-size: clamp(15px, 1.6vw, 19px);
+  line-height: 1.8;
+  color: var(--color-muted);
+  max-width: 42ch;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 1.6s forwards;
+}
+.msg strong { color: var(--color-text); }
+
+.hint {
+  margin-top: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 10px 20px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 2.1s forwards, breathe 2.4s ease-in-out 3s infinite;
+  cursor: default;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hint::before {
+  content: "";
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent);
+}
+
+/* ---------- 우측: 케이크 영역 ---------- */
+.cake-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  animation: fadeUp 1s ease 1.4s forwards;
+}
+
+.cake {
+  position: relative;
+  width: min(300px, 60vw);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: floaty 4s ease-in-out infinite;
+}
+.cake:hover { transform: scale(1.04) rotate(-1deg); }
+
+/* 케이크 층 — CSS로만 표현 */
+.layer {
+  position: relative;
+  margin: 0 auto;
+  border-radius: 14px;
+  box-shadow: inset 0 -10px 0 rgba(0,0,0,0.18);
+}
+.layer.top    { width: 55%; height: 54px; background: linear-gradient(180deg, #ff8fa5, #ff5e7e); z-index: 3; }
+.layer.middle { width: 76%; height: 62px; background: linear-gradient(180deg, #ffd28f, #ffb64d); margin-top: -8px; z-index: 2; }
+.layer.bottom { width: 100%; height: 72px; background: linear-gradient(180deg, #9ceaff, #58c8e8); margin-top: -8px; z-index: 1; }
+
+/* 크림 드립 */
+.layer::after {
+  content: "";
+  position: absolute;
+  top: -6px; left: 0; right: 0;
+  height: 18px;
+  background: #fff6e8;
+  border-radius: 14px 14px 0 0;
+  /* 물결 드립 모양 */
+  -webkit-mask: radial-gradient(circle 10px at 10px 18px, transparent 9px, #000 10px) repeat-x;
+          mask: radial-gradient(circle 10px at 10px 18px, transparent 9px, #000 10px) repeat-x;
+  -webkit-mask-size: 22px 100%;
+          mask-size: 22px 100%;
+}
+
+/* 접시 */
+.plate {
+  width: 118%;
+  height: 16px;
+  margin: -4px auto 0;
+  background: linear-gradient(180deg, #3a3560, #262244);
+  border-radius: 999px;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.5);
+}
+
+/* 촛불 */
+.candles {
+  position: absolute;
+  top: -46px; left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 26px;
+  z-index: 4;
+}
+.candle {
+  position: relative;
+  width: 10px; height: 40px;
+  border-radius: 4px;
+  background: repeating-linear-gradient(45deg, #fff 0 5px, var(--color-accent2) 5px 10px);
+}
+.candle:nth-child(2) { background: repeating-linear-gradient(45deg, #fff 0 5px, var(--color-accent3) 5px 10px); }
+.candle:nth-child(3) { background: repeating-linear-gradient(45deg, #fff 0 5px, var(--color-accent) 5px 10px); }
+
+/* 불꽃 — 흔들림 애니메이션 */
+.flame {
+  position: absolute;
+  top: -20px; left: 50%;
+  width: 14px; height: 20px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 50% 80%, #fff 0%, #ffd28f 35%, #ff8c3a 70%, transparent 72%);
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  transform-origin: 50% 100%;
+  animation: flicker 0.28s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 10px rgba(255, 182, 77, 0.9));
+  transition: opacity 0.4s, transform 0.4s;
+}
+.candle:nth-child(2) .flame { animation-delay: 0.1s; }
+.candle:nth-child(3) .flame { animation-delay: 0.18s; }
+
+/* 촛불 꺼진 상태 — 연기 표현 */
+.cake.blown .flame {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.2);
+}
+.smoke {
+  position: absolute;
+  top: -26px; left: 50%;
+  width: 6px; height: 6px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(200, 200, 220, 0.5);
+  opacity: 0;
+}
+.cake.blown .smoke { animation: rise 1.6s ease-out forwards; }
+
+.cake-caption {
+  margin-top: 26px;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+  transition: color 0.3s;
+}
+
+/* 소원 성취 메시지 — 촛불 끈 후 표시 */
+.wish {
+  position: fixed;
+  left: 50%; bottom: 8vh;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 7;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: clamp(20px, 3vw, 32px);
+  color: var(--color-heading);
+  text-shadow: 0 0 24px rgba(255, 182, 77, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.wish.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ============================================
+   풍선 — CSS 도형으로만 구현
+   ============================================ */
+.balloon {
+  position: fixed;
+  bottom: -140px;
+  z-index: 1;
+  width: 54px; height: 66px;
+  border-radius: 50% 50% 50% 50% / 55% 55% 45% 45%;
+  animation: floatUp linear infinite;
+  opacity: 0.85;
+}
+.balloon::before { /* 매듭 */
+  content: "";
+  position: absolute;
+  bottom: -7px; left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 8px solid inherit;
+  border-bottom-color: inherit;
+}
+.balloon::after { /* 실 */
+  content: "";
+  position: absolute;
+  bottom: -58px; left: 50%;
+  width: 1.5px; height: 52px;
+  background: rgba(255,255,255,0.35);
+}
+.balloon i { /* 하이라이트 */
+  position: absolute;
+  top: 10px; left: 12px;
+  width: 14px; height: 20px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  transform: rotate(-20deg);
+}
+
+/* ============================================
+   키프레임 정의
+   ============================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  to { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+@keyframes shimmer {
+  to { background-position: 220% center; }
+}
+@keyframes flicker {
+  from { transform: translateX(-50%) rotate(-4deg) scaleY(1); }
+  to   { transform: translateX(-52%) rotate(4deg) scaleY(1.15); }
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+@keyframes floatUp {
+  from { transform: translateY(0) rotate(-3deg); }
+  to   { transform: translateY(-130vh) rotate(4deg); }
+}
+@keyframes rise {
+  0%   { opacity: 0.8; transform: translateX(-50%) translateY(0) scale(1); }
+  100% { opacity: 0;   transform: translateX(-46%) translateY(-46px) scale(2.4); }
+}
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 0 0 rgba(255,182,77,0); }
+  50%      { box-shadow: 0 0 22px rgba(255,182,77,0.35); }
+}
+
+/* ============================================
+   반응형 — 모바일 대응
+   ============================================ */
+@media (max-width: 760px) {
+  html, body { overflow-y: auto; }
+  .stage {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-top: 8vh;
+  }
+  .name { justify-content: center; }
+  .msg { margin-left: auto; margin-right: auto; }
+  .cake-wrap { margin-top: 12px; padding-bottom: 12vh; }
+}
+</style>
+</head>
+<body>
+
+<!-- 배경 별 캔버스 -->
+<canvas id="stars"></canvas>
+
+<div class="stage">
+  <!-- 좌측 타이포 영역 -->
+  <div class="copy">
+    <p class="eyebrow">JULY 30 &mdash; A DAY TO CELEBRATE</p>
+    <h1>Happy<br>Birthday</h1>
+    <div class="name" aria-label="유은지">
+      <span>유</span><span>은</span><span>지</span>
+    </div>
+    <p class="msg">
+      오늘 하루만큼은 세상의 주인공.<br>
+      <strong>웃음 가득하고 반짝이는 한 해</strong>가 되기를,<br>
+      그리고 늘 곁에서 함께 축하할 수 있기를.
+    </p>
+    <div class="hint" id="hint">케이크를 눌러 촛불을 꺼 보세요</div>
+  </div>
+
+  <!-- 우측 케이크 영역 -->
+  <div class="cake-wrap">
+    <div class="cake" id="cake" role="button" aria-label="촛불 끄기">
+      <div class="candles">
+        <div class="candle"><div class="flame"></div><div class="smoke"></div></div>
+        <div class="candle"><div class="flame"></div><div class="smoke"></div></div>
+        <div class="candle"><div class="flame"></div><div class="smoke"></div></div>
+      </div>
+      <div class="layer top"></div>
+      <div class="layer middle"></div>
+      <div class="layer bottom"></div>
+      <div class="plate"></div>
+    </div>
+    <p class="cake-caption" id="caption">Make a wish</p>
+  </div>
+</div>
+
+<!-- 소원 메시지 -->
+<div class="wish" id="wish">소원이 이루어질 거예요, 은지님!</div>
+
+<!-- 컨페티 / 폭죽 캔버스 -->
+<canvas id="confetti"></canvas>
+<canvas id="firework"></canvas>
+
+<script>
+/* ============================================================
+   공통 유틸 — 캔버스 리사이즈, 난수
+   ============================================================ */
+const rand = (min, max) => Math.random() * (max - min) + min;
+
+function fitCanvas(canvas) {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+const starsCv = document.getElementById('stars');
+const confCv  = document.getElementById('confetti');
+const fireCv  = document.getElementById('firework');
+[starsCv, confCv, fireCv].forEach(fitCanvas);
+window.addEventListener('resize', () => [starsCv, confCv, fireCv].forEach(fitCanvas));
+
+/* ============================================================
+   효과 1 — 반짝이는 별 배경
+   ============================================================ */
+const sCtx = starsCv.getContext('2d');
+const stars = Array.from({ length: 90 }, () => ({
+  x: Math.random(), y: Math.random(),
+  r: rand(0.4, 1.6),
+  tw: rand(0.5, 2.5),          // 반짝임 속도
+  ph: rand(0, Math.PI * 2)     // 위상
+}));
+
+function drawStars(t) {
+  sCtx.clearRect(0, 0, starsCv.width, starsCv.height);
+  for (const s of stars) {
+    const alpha = 0.25 + 0.75 * Math.abs(Math.sin(t / 1000 * s.tw + s.ph));
+    sCtx.beginPath();
+    sCtx.arc(s.x * starsCv.width, s.y * starsCv.height, s.r, 0, Math.PI * 2);
+    sCtx.fillStyle = `rgba(255, 246, 232, ${alpha * 0.8})`;
+    sCtx.fill();
+  }
+  requestAnimationFrame(drawStars);
+}
+requestAnimationFrame(drawStars);
+
+/* ============================================================
+   효과 2 — 컨페티 (지속 낙하 + 클릭 버스트)
+   ============================================================ */
+const cCtx = confCv.getContext('2d');
+const COLORS = ['#ffb64d', '#ff5e7e', '#6ee7ff', '#c9a0ff', '#fff6e8', '#7dffb0'];
+let confetti = [];
+
+function spawnConfetti(n, burstX, burstY) {
+  for (let i = 0; i < n; i++) {
+    const burst = burstX !== undefined;
+    confetti.push({
+      x: burst ? burstX : rand(0, confCv.width),
+      y: burst ? burstY : rand(-60, -10),
+      w: rand(6, 12), h: rand(4, 8),
+      vx: burst ? rand(-6, 6) : rand(-0.6, 0.6),
+      vy: burst ? rand(-9, -3) : rand(1.2, 3),
+      rot: rand(0, Math.PI * 2),
+      vr: rand(-0.15, 0.15),
+      color: COLORS[(Math.random() * COLORS.length) | 0],
+      life: 1
+    });
+  }
+}
+
+// 처음 진입 시 은은한 낙하 컨페티 유지
+setInterval(() => { if (confetti.length < 120) spawnConfetti(4); }, 250);
+
+function drawConfetti() {
+  cCtx.clearRect(0, 0, confCv.width, confCv.height);
+  confetti = confetti.filter(p => p.y < confCv.height + 40 && p.life > 0);
+  for (const p of confetti) {
+    p.vy += 0.06;                       // 중력
+    p.x += p.vx + Math.sin(p.y * 0.02); // 좌우 흔들림
+    p.y += p.vy;
+    p.rot += p.vr;
+    cCtx.save();
+    cCtx.translate(p.x, p.y);
+    cCtx.rotate(p.rot);
+    cCtx.fillStyle = p.color;
+    cCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    cCtx.restore();
+  }
+  requestAnimationFrame(drawConfetti);
+}
+requestAnimationFrame(drawConfetti);
+
+/* ============================================================
+   효과 3 — 폭죽 (촛불 끄면 발사)
+   ============================================================ */
+const fCtx = fireCv.getContext('2d');
+let sparks = [];
+
+function launchFirework(x, y) {
+  const color = COLORS[(Math.random() * COLORS.length) | 0];
+  for (let i = 0; i < 70; i++) {
+    const angle = (Math.PI * 2 * i) / 70;
+    const speed = rand(2, 7);
+    sparks.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: rand(50, 90),
+      color
+    });
+  }
+}
+
+function drawFireworks() {
+  // 잔상 효과를 위한 반투명 지우기
+  fCtx.globalCompositeOperation = 'destination-out';
+  fCtx.fillStyle = 'rgba(0,0,0,0.18)';
+  fCtx.fillRect(0, 0, fireCv.width, fireCv.height);
+  fCtx.globalCompositeOperation = 'lighter';
+
+  sparks = sparks.filter(s => s.life > 0);
+  for (const s of sparks) {
+    s.vy += 0.05;
+    s.x += s.vx;
+    s.y += s.vy;
+    s.life -= 1;
+    fCtx.beginPath();
+    fCtx.arc(s.x, s.y, 2.2, 0, Math.PI * 2);
+    fCtx.fillStyle = s.color;
+    fCtx.globalAlpha = Math.max(s.life / 90, 0);
+    fCtx.fill();
+    fCtx.globalAlpha = 1;
+  }
+  requestAnimationFrame(drawFireworks);
+}
+requestAnimationFrame(drawFireworks);
+
+/* ============================================================
+   효과 4 — 풍선 자동 생성 (CSS 도형)
+   ============================================================ */
+const BALLOON_COLORS = [
+  'radial-gradient(circle at 35% 30%, #ffd28f, #ffb64d)',
+  'radial-gradient(circle at 35% 30%, #ff9ab0, #ff5e7e)',
+  'radial-gradient(circle at 35% 30%, #a8f0ff, #6ee7ff)',
+  'radial-gradient(circle at 35% 30%, #e0c8ff, #c9a0ff)'
+];
+
+function spawnBalloon() {
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  b.style.left = rand(2, 92) + 'vw';
+  b.style.background = BALLOON_COLORS[(Math.random() * BALLOON_COLORS.length) | 0];
+  b.style.animationDuration = rand(9, 16) + 's';
+  b.style.width = rand(40, 64) + 'px';
+  b.style.height = rand(50, 78) + 'px';
+  b.appendChild(document.createElement('i'));
+  document.body.appendChild(b);
+  // 화면을 벗어나면 DOM에서 제거한다
+  b.addEventListener('animationend', () => b.remove());
+}
+setInterval(spawnBalloon, 1800);
+for (let i = 0; i < 4; i++) setTimeout(spawnBalloon, i * 500);
+
+/* ============================================================
+   인터랙션 — 케이크 클릭: 촛불 끄기 + 폭죽 + 컨페티 버스트
+   ============================================================ */
+const cake = document.getElementById('cake');
+const wish = document.getElementById('wish');
+const caption = document.getElementById('caption');
+const hint = document.getElementById('hint');
+let blown = false;
+
+cake.addEventListener('click', (e) => {
+  if (!blown) {
+    // 최초 클릭: 촛불을 끄고 축하 연출을 시작한다
+    blown = true;
+    cake.classList.add('blown');
+    wish.classList.add('show');
+    caption.textContent = 'Wish granted';
+    hint.textContent = '한 번 더 누르면 폭죽이 터져요';
+
+    launchFirework(rand(fireCv.width * 0.2, fireCv.width * 0.8), rand(fireCv.height * 0.15, fireCv.height * 0.4));
+    setTimeout(() => launchFirework(rand(100, fireCv.width - 100), rand(80, fireCv.height * 0.5)), 350);
+    setTimeout(() => launchFirework(rand(100, fireCv.width - 100), rand(80, fireCv.height * 0.5)), 750);
+    spawnConfetti(120, e.clientX, e.clientY);
+  } else {
+    // 이후 클릭: 폭죽과 컨페티를 추가로 터뜨린다
+    launchFirework(rand(100, fireCv.width - 100), rand(80, fireCv.height * 0.5));
+    spawnConfetti(60, e.clientX, e.clientY);
+  }
+});
+
+// 배경 아무 곳이나 클릭해도 작은 폭죽이 터진다
+document.body.addEventListener('click', (e) => {
+  if (e.target.closest('.cake')) return;
+  launchFirework(e.clientX, e.clientY);
+});
+</script>
+</body>
+</html>
