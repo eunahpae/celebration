@@ -1,0 +1,44 @@
+name: 인스타 피드 자동 게시
+
+on:
+  schedule:
+    - cron: '0 3 * * 1,3,5'   # 월·수·금 12:00 KST (03:00 UTC)
+  workflow_dispatch:           # 수동 실행 버튼
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 의존성 설치
+        run: |
+          pip install anthropic playwright
+          playwright install --with-deps chromium
+
+      - name: 문구 생성 + 렌더
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python insta/post.py generate
+
+      # 인스타는 공개 URL만 받는다 — 게시 전에 이미지가 먼저 푸시되어야 한다.
+      - name: 이미지 커밋 & 푸시
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add insta/out insta/history.json
+          git commit -m "insta: $(date -u +%Y-%m-%d) 카드"
+          git push
+
+      - name: 인스타 게시
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: python insta/post.py publish

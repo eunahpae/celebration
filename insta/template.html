@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent: {{ACCENT}};
+  --bg:     #0a0d12;
+  --ink:    #f2f5f8;
+  --muted:  #7f8b99;
+  --line:   rgba(255, 255, 255, 0.09);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1350px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  /* 배경: 미세한 격자 + 액센트 글로우 */
+  background-image:
+    radial-gradient(ellipse 70% 50% at 78% 8%, color-mix(in srgb, var(--accent) 14%, transparent) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 10% 100%, rgba(120, 150, 255, 0.10) 0%, transparent 60%),
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 90px 90px, 90px 90px;
+  overflow: hidden;
+}
+
+.card {
+  height: 100%;
+  padding: 96px 88px 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 상단 kicker ────────────────────────────── */
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.kicker::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 55%, transparent), transparent);
+}
+
+/* ── 제목 ───────────────────────────────────── */
+.title {
+  margin-top: 72px;
+  font-weight: 900;
+  font-size: 94px;
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+  word-break: keep-all;
+}
+.title em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+/* 제목이 길면 자동으로 한 단계 줄임 */
+.title.long { font-size: 74px; }
+
+/* ── 본문 포인트 ────────────────────────────── */
+.points {
+  margin-top: 76px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+.points li {
+  position: relative;
+  padding-left: 44px;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #c9d2dc;
+  word-break: keep-all;
+}
+.points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 24px;
+  width: 22px;
+  height: 3px;
+  background: var(--accent);
+}
+
+/* ── 하단 ───────────────────────────────────── */
+.foot {
+  margin-top: auto;
+  padding-top: 44px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.foot .no { color: var(--accent); font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="kicker">{{KICKER}}</div>
+    <h1 class="title {{TITLE_CLASS}}">{{TITLE}}</h1>
+    <ul class="points">{{POINTS}}</ul>
+    <div class="foot">
+      <span>{{HANDLE}}</span>
+      <span class="no">NO.{{INDEX}}</span>
+    </div>
+  </div>
+</body>
+</html>
