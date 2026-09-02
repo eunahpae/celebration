@@ -151,6 +151,7 @@ def fill_template(copy: dict, index: int) -> str:
     page_html = (ROOT / "template.html").read_text(encoding="utf-8")
     for key, value in {
         "{{ACCENT}}": CONFIG["accent"],
+        "{{ACCENT2}}": CONFIG["accent2"],
         "{{TYPE}}": html.escape(copy.get("type", "기본")),
         "{{KICKER}}": html.escape(copy["kicker"]),
         "{{TITLE}}": title,

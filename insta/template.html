@@ -8,11 +8,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --accent: {{ACCENT}};
-  --bg:     #0a0d12;
-  --ink:    #f2f5f8;
-  --muted:  #7f8b99;
-  --line:   rgba(255, 255, 255, 0.09);
+  --accent:  {{ACCENT}};    /* 로고 시안 */
+  --accent2: {{ACCENT2}};   /* 로고 마젠타 */
+  --bg:      #080b16;       /* 로고 원 배경 */
+  --ink:     #f2f5f8;
+  --muted:   #7e8aa3;
+  --line:    rgba(255, 255, 255, 0.08);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,8 +25,8 @@ body {
   color: var(--ink);
   background: var(--bg);
   background-image:
-    radial-gradient(ellipse 70% 50% at 78% 6%, color-mix(in srgb, var(--accent) 15%, transparent) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 8% 100%, rgba(120, 150, 255, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 65% 45% at 82% 4%, color-mix(in srgb, var(--accent) 16%, transparent) 0%, transparent 62%),
+    radial-gradient(ellipse 65% 45% at 6% 98%, color-mix(in srgb, var(--accent2) 14%, transparent) 0%, transparent 62%),
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 90px 90px, 90px 90px;
@@ -72,7 +73,7 @@ body {
   content: "";
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 55%, transparent), transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 55%, transparent), color-mix(in srgb, var(--accent2) 30%, transparent) 60%, transparent);
 }
 
 /* ── 제목 ───────────────────────────────────── */
@@ -83,7 +84,13 @@ body {
   letter-spacing: -0.03em;
   word-break: keep-all;
 }
-.title em { font-style: normal; color: var(--accent); }
+.title em {
+  font-style: normal;
+  background: linear-gradient(102deg, var(--accent) 0%, var(--accent2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 .title.long { font-size: 66px; }
 
 /* ── 리드 한 줄 ─────────────────────────────── */
@@ -150,7 +157,13 @@ body {
   letter-spacing: 0.05em;
   color: var(--muted);
 }
-.foot .no { color: var(--accent); font-weight: 700; }
+.foot .no {
+  font-weight: 700;
+  background: linear-gradient(102deg, var(--accent) 0%, var(--accent2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 </style>
 </head>
 <body>
