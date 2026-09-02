@@ -46,7 +46,7 @@ SCHEMA = {
         "lead": {"type": "string", "description": "제목 아래 한 줄. 이게 없을 때 뭐가 괴로운지. 32자 이내."},
         "points": {
             "type": "array",
-            "description": "카드 본문. 3개. 각 30자 이내의 완결된 문장.",
+            "description": "카드 본문 3개. 각 46자 이내. 기능만 나열하지 말고 그게 뭘 해주는지 설명할 것.",
             "items": {"type": "string"},
         },
         "code": {
