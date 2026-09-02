@@ -1,7 +1,8 @@
 [
   {
     "topic": "superpowers brainstorming — 코드 작성 전 설계 승인 게이트",
-    "kicker": "BEFORE YOU CODE",
+    "type": "플러그인",
+    "kicker": "SUPERPOWERS",
     "title": "바로 짜지 말고 <em>먼저 묻게</em> 하기",
     "lead": "다 짜고 나서 \"이게 아닌데\" 하는 순간.",
     "points": [
@@ -22,6 +23,7 @@
   },
   {
     "topic": "humanizer 스킬 — AI가 쓴 티가 나는 문장 패턴 제거",
+    "type": "플러그인",
     "kicker": "HUMANIZER",
     "title": "AI가 쓴 티, <em>지울 수</em> 있습니다",
     "lead": "매끄러운데 붕 뜬 그 느낌의 정체.",
@@ -44,6 +46,7 @@
   },
   {
     "topic": "CLAUDE.md로 반복 지시를 파일에 고정하기",
+    "type": "설정",
     "kicker": "CLAUDE.MD",
     "title": "같은 말 <em>반복</em>하고 계신가요",
     "lead": "매 세션 같은 지시를 다시 하고 있다면.",
@@ -66,6 +69,7 @@
   },
   {
     "topic": "플러그인 설치 구조 — 마켓플레이스 등록 후 설치",
+    "type": "기본",
     "kicker": "PLUGINS",
     "title": "스킬은 <em>깃허브</em>에서 옵니다",
     "lead": "어디서 받는지 몰라 못 쓰고 계셨다면.",
@@ -88,6 +92,7 @@
   },
   {
     "topic": "스킬은 개발자 전용이라는 오해",
+    "type": "기본",
     "kicker": "COMMON MYTH",
     "title": "스킬은 <em>개발자만</em> 쓰나요",
     "lead": "코드 짜는 스킬이 오히려 소수입니다.",

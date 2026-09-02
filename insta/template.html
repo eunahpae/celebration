@@ -46,7 +46,21 @@ body {
 .kicker {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
+}
+/* 타입 배지 — 스킬 / 플러그인 / MCP / 설정 / 기본 */
+.kicker .tag {
+  flex: none;
+  padding: 8px 18px 9px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  font-weight: 700;
+  font-size: 23px;
+  line-height: 1;
+  color: var(--accent);
+}
+.kicker .name {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
   font-size: 25px;
@@ -141,7 +155,7 @@ body {
 </head>
 <body>
   <div class="card">
-    <div class="kicker">{{KICKER}}</div>
+    <div class="kicker"><span class="tag">{{TYPE}}</span><span class="name">{{KICKER}}</span></div>
     <div class="head">
       <h1 class="title {{TITLE_CLASS}}">{{TITLE}}</h1>
       <p class="lead">{{LEAD}}</p>

@@ -36,7 +36,12 @@ SCHEMA = {
     "type": "object",
     "properties": {
         "topic": {"type": "string", "description": "이 게시물의 주제를 한 문장으로. 중복 방지용 내부 기록."},
-        "kicker": {"type": "string", "description": "카드 최상단 영문 대문자 라벨. 2~4단어."},
+        "type": {
+            "type": "string",
+            "enum": ["스킬", "플러그인", "MCP", "설정", "기본"],
+            "description": "카드 최상단 타입 배지. 새 값을 만들지 말 것.",
+        },
+        "kicker": {"type": "string", "description": "타입 배지 옆 이름. 스킬·플러그인이면 그 이름, 아니면 영문 대문자 라벨 1~3단어."},
         "title": {"type": "string", "description": "카드 대제목. 한국어 18자 이내. 강조할 부분은 <em>로 감쌀 것."},
         "lead": {"type": "string", "description": "제목 아래 한 줄. 이게 없을 때 뭐가 괴로운지. 32자 이내."},
         "points": {
@@ -52,7 +57,7 @@ SCHEMA = {
         "caption": {"type": "string", "description": "인스타 캡션. 3~5문장. 카드 내용을 풀어 설명하고 마지막에 질문 하나."},
         "hashtags": {"type": "array", "items": {"type": "string"}, "description": "# 포함 해시태그 5~8개."},
     },
-    "required": ["topic", "kicker", "title", "lead", "points", "code", "caption", "hashtags"],
+    "required": ["topic", "type", "kicker", "title", "lead", "points", "code", "caption", "hashtags"],
     "additionalProperties": False,
 }
 
@@ -146,6 +151,7 @@ def fill_template(copy: dict, index: int) -> str:
     page_html = (ROOT / "template.html").read_text(encoding="utf-8")
     for key, value in {
         "{{ACCENT}}": CONFIG["accent"],
+        "{{TYPE}}": html.escape(copy.get("type", "기본")),
         "{{KICKER}}": html.escape(copy["kicker"]),
         "{{TITLE}}": title,
         "{{TITLE_CLASS}}": "long" if len(copy["title"].replace("<em>", "").replace("</em>", "")) > 18 else "",
