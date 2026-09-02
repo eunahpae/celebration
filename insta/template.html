@@ -140,8 +140,11 @@ body {
   line-height: 1.65;
   color: #dfe6ee;
   white-space: pre-wrap;
-  word-break: break-all;
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
+/* 긴 명령어는 단어 중간에서 잘리지 않게 한 단계 줄인다 */
+.code.narrow { font-size: 25px; }
 .code .p { color: var(--accent); }
 .code:empty { display: none; }
 
@@ -181,7 +184,7 @@ body {
       <p class="lead">{{LEAD}}</p>
     </div>
     <ul class="points">{{POINTS}}</ul>
-    <div class="code">{{CODE}}</div>
+    <div class="code {{CODE_CLASS}}">{{CODE}}</div>
     <div class="foot">
       <span class="who">
         <span>{{HANDLE}}</span>

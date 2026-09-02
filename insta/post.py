@@ -70,6 +70,11 @@ def load_history() -> list[dict]:
     return json.loads(HISTORY.read_text(encoding="utf-8"))
 
 
+def slugify(text: str) -> str:
+    """kicker 를 파일명에 쓸 수 있는 형태로. 'CLAUDE.MD' -> 'claude_md'"""
+    return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
+
+
 def today_slug() -> str:
     return datetime.now(KST).strftime("%Y-%m-%d")
 
@@ -148,6 +153,8 @@ def fill_template(copy: dict, index: int) -> str:
         for line in copy.get("code", [])
     )
 
+    longest = max((len(line) for line in copy.get("code", [])), default=0)
+
     page_html = (ROOT / "template.html").read_text(encoding="utf-8")
     for key, value in {
         "{{ACCENT}}": CONFIG["accent"],
@@ -159,6 +166,7 @@ def fill_template(copy: dict, index: int) -> str:
         "{{LEAD}}": html.escape(copy.get("lead", "")),
         "{{POINTS}}": points,
         "{{CODE}}": code,
+        "{{CODE_CLASS}}": "narrow" if longest > 46 else "",
         "{{HANDLE}}": html.escape(CONFIG["handle"]),
         "{{SLOGAN}}": html.escape(CONFIG["slogan"]),
         "{{INDEX}}": f"{index:03d}",
@@ -234,7 +242,6 @@ def load_queue() -> list[dict]:
 def cmd_generate(dry_run: bool) -> None:
     history = load_history()
     index = len(history) + 1
-    slug = today_slug()
 
     # 큐에 미리 써둔 문구가 있으면 그것부터 쓴다 (API 호출 없음).
     queue = load_queue()
@@ -251,6 +258,8 @@ def cmd_generate(dry_run: bool) -> None:
             "insta/queue.json 에 카드를 채우거나, API 키를 설정하세요."
         )
 
+    # 번호 + 소재 이름. 같은 날 여러 장을 만들어도 안 덮어쓰고, 목록에서 바로 알아본다
+    slug = f"{index:03d}_{slugify(copy['kicker'])}"
     image = render(copy, index, OUT / f"{slug}.jpg")
 
     hashtags = list(dict.fromkeys(copy["hashtags"] + CONFIG["fixed_hashtags"]))
@@ -370,7 +379,10 @@ def cmd_harvest() -> None:
 
 
 def cmd_publish() -> None:
-    payload = json.loads((OUT / f"{today_slug()}.json").read_text(encoding="utf-8"))
+    history = load_history()
+    if not history:
+        raise SystemExit("생성된 카드가 없습니다. 먼저 generate 를 실행하세요.")
+    payload = history[-1]
     media_id = publish(CONFIG["image_url_base"] + payload["image"], payload["caption"])
     print(f"게시 완료: {media_id}  ({payload['title']})")
 
