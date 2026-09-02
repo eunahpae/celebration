@@ -160,6 +160,7 @@ def fill_template(copy: dict, index: int) -> str:
         "{{POINTS}}": points,
         "{{CODE}}": code,
         "{{HANDLE}}": html.escape(CONFIG["handle"]),
+        "{{SLOGAN}}": html.escape(CONFIG["slogan"]),
         "{{INDEX}}": f"{index:03d}",
     }.items():
         page_html = page_html.replace(key, value)

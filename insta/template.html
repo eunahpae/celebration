@@ -151,11 +151,18 @@ body {
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-end;
   font-family: 'Space Grotesk', sans-serif;
   font-size: 27px;
   letter-spacing: 0.05em;
   color: var(--muted);
+}
+.foot .who { display: flex; flex-direction: column; gap: 10px; }
+.foot .slogan {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 21px;
+  letter-spacing: 0;
+  color: color-mix(in srgb, var(--muted) 72%, transparent);
 }
 .foot .no {
   font-weight: 700;
@@ -176,7 +183,10 @@ body {
     <ul class="points">{{POINTS}}</ul>
     <div class="code">{{CODE}}</div>
     <div class="foot">
-      <span>{{HANDLE}}</span>
+      <span class="who">
+        <span>{{HANDLE}}</span>
+        <span class="slogan">{{SLOGAN}}</span>
+      </span>
       <span class="no">NO.{{INDEX}}</span>
     </div>
   </div>
