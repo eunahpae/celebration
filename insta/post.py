@@ -42,7 +42,7 @@ SCHEMA = {
             "description": "카드 최상단 타입 배지. 새 값을 만들지 말 것.",
         },
         "kicker": {"type": "string", "description": "타입 배지 옆 이름. 스킬·플러그인이면 그 이름, 아니면 영문 대문자 라벨 1~3단어."},
-        "title": {"type": "string", "description": "카드 대제목. 한국어 18자 이내. 강조할 부분은 <em>로 감쌀 것."},
+        "title": {"type": "string", "description": "카드 대제목. 한국어 18자 이내. 강조는 <em>로 감싼다. 12자가 넘으면 줄바꿈 문자로 끊을 위치를 직접 정할 것. 마지막 줄에 두세 글자만 남으면 안 된다."},
         "lead": {"type": "string", "description": "제목 아래 한 줄. 이게 없을 때 뭐가 괴로운지. 32자 이내."},
         "points": {
             "type": "array",
@@ -145,8 +145,11 @@ def write_copy(recent_topics: list[str], index: int) -> dict:
 
 def fill_template(copy: dict, index: int) -> str:
     points = "".join(f"<li>{html.escape(p)}</li>" for p in copy["points"])
-    # title 만 <em> 태그를 허용 — 나머지는 이스케이프
-    title = html.escape(copy["title"]).replace("&lt;em&gt;", "<em>").replace("&lt;/em&gt;", "</em>")
+    # title 은 <em> 강조와 줄바꿈만 허용 — 나머지는 이스케이프.
+    # 줄바꿈 위치는 카드를 쓸 때 직접 정한다 (마지막 줄에 두세 글자만 남지 않게)
+    title = (html.escape(copy["title"])
+             .replace("&lt;em&gt;", "<em>").replace("&lt;/em&gt;", "</em>")
+             .replace("\n", "<br>"))
     # 명령어 블록: 슬래시로 시작하는 줄의 명령 부분만 액센트 색
     code = "\n".join(
         re.sub(r"^(/\S+)", r'<span class="p">\1</span>', html.escape(line))
@@ -162,7 +165,7 @@ def fill_template(copy: dict, index: int) -> str:
         "{{TYPE}}": html.escape(copy.get("type", "기본")),
         "{{KICKER}}": html.escape(copy["kicker"]),
         "{{TITLE}}": title,
-        "{{TITLE_CLASS}}": "long" if len(copy["title"].replace("<em>", "").replace("</em>", "")) > 18 else "",
+        "{{TITLE_CLASS}}": "long" if len(re.sub(r"</?em>|\n", "", copy["title"])) > 18 else "",
         "{{LEAD}}": html.escape(copy.get("lead", "")),
         "{{POINTS}}": points,
         "{{CODE}}": code,
