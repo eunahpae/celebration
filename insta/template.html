@@ -5,7 +5,7 @@
 <title>card</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
   --accent: {{ACCENT}};
@@ -23,10 +23,9 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   color: var(--ink);
   background: var(--bg);
-  /* 배경: 미세한 격자 + 액센트 글로우 */
   background-image:
-    radial-gradient(ellipse 70% 50% at 78% 8%, color-mix(in srgb, var(--accent) 14%, transparent) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 10% 100%, rgba(120, 150, 255, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 78% 6%, color-mix(in srgb, var(--accent) 15%, transparent) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 8% 100%, rgba(120, 150, 255, 0.10) 0%, transparent 60%),
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 90px 90px, 90px 90px;
@@ -35,9 +34,12 @@ body {
 
 .card {
   height: 100%;
-  padding: 96px 88px 80px;
+  padding: 78px 76px 68px;
   display: flex;
   flex-direction: column;
+  /* 남는 세로 공간을 블록 사이에 고르게 나눈다 —
+     한 군데로 몰리면 카드가 비어 보인다 */
+  justify-content: space-between;
 }
 
 /* ── 상단 kicker ────────────────────────────── */
@@ -47,7 +49,7 @@ body {
   gap: 18px;
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 26px;
+  font-size: 25px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
@@ -60,41 +62,38 @@ body {
 }
 
 /* ── 제목 ───────────────────────────────────── */
-/* title 위와 points 아래에 남는 공간을 반씩 나눠 가지게 해서
-   본문 블록이 kicker 와 foot 사이 가운데에 오도록 한다 */
 .title {
-  margin-top: auto;
-  padding-top: 72px;
   font-weight: 900;
-  font-size: 94px;
-  line-height: 1.22;
+  font-size: 80px;
+  line-height: 1.2;
   letter-spacing: -0.03em;
   word-break: keep-all;
 }
-.title em {
-  font-style: normal;
-  color: var(--accent);
-}
+.title em { font-style: normal; color: var(--accent); }
+.title.long { font-size: 66px; }
 
-/* 제목이 길면 자동으로 한 단계 줄임 */
-.title.long { font-size: 74px; }
+/* ── 리드 한 줄 ─────────────────────────────── */
+.lead:empty { display: none; }
+.lead {
+  margin-top: 30px;
+  font-size: 36px;
+  line-height: 1.45;
+  color: var(--muted);
+  word-break: keep-all;
+}
 
 /* ── 본문 포인트 ────────────────────────────── */
 .points {
-  margin-top: 76px;
-  margin-bottom: auto;
-  padding-bottom: 40px;
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 34px;
+  gap: 30px;
 }
 .points li {
   position: relative;
-  padding-left: 44px;
+  padding-left: 42px;
   font-size: 40px;
-  font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.45;
   color: #c9d2dc;
   word-break: keep-all;
 }
@@ -102,21 +101,38 @@ body {
   content: "";
   position: absolute;
   left: 0;
-  top: 24px;
+  top: 23px;
   width: 22px;
   height: 3px;
   background: var(--accent);
 }
 
+/* ── 명령어 블록 ────────────────────────────── */
+.code {
+  padding: 34px 36px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-left: 4px solid var(--accent);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.035);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 29px;
+  line-height: 1.65;
+  color: #dfe6ee;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.code .p { color: var(--accent); }
+.code:empty { display: none; }
+
 /* ── 하단 ───────────────────────────────────── */
 .foot {
-  padding-top: 44px;
+  padding-top: 38px;
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 28px;
+  font-size: 27px;
   letter-spacing: 0.05em;
   color: var(--muted);
 }
@@ -126,8 +142,12 @@ body {
 <body>
   <div class="card">
     <div class="kicker">{{KICKER}}</div>
-    <h1 class="title {{TITLE_CLASS}}">{{TITLE}}</h1>
+    <div class="head">
+      <h1 class="title {{TITLE_CLASS}}">{{TITLE}}</h1>
+      <p class="lead">{{LEAD}}</p>
+    </div>
     <ul class="points">{{POINTS}}</ul>
+    <div class="code">{{CODE}}</div>
     <div class="foot">
       <span>{{HANDLE}}</span>
       <span class="no">NO.{{INDEX}}</span>

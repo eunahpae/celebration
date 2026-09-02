@@ -38,15 +38,21 @@ SCHEMA = {
         "topic": {"type": "string", "description": "이 게시물의 주제를 한 문장으로. 중복 방지용 내부 기록."},
         "kicker": {"type": "string", "description": "카드 최상단 영문 대문자 라벨. 2~4단어."},
         "title": {"type": "string", "description": "카드 대제목. 한국어 18자 이내. 강조할 부분은 <em>로 감쌀 것."},
+        "lead": {"type": "string", "description": "제목 아래 한 줄. 이게 없을 때 뭐가 괴로운지. 32자 이내."},
         "points": {
             "type": "array",
             "description": "카드 본문. 3개. 각 30자 이내의 완결된 문장.",
             "items": {"type": "string"},
         },
+        "code": {
+            "type": "array",
+            "description": "카드 하단 명령어 블록. 설치 명령이나 사용 예시. 각 줄 46자 이내, 최대 4줄.",
+            "items": {"type": "string"},
+        },
         "caption": {"type": "string", "description": "인스타 캡션. 3~5문장. 카드 내용을 풀어 설명하고 마지막에 질문 하나."},
         "hashtags": {"type": "array", "items": {"type": "string"}, "description": "# 포함 해시태그 5~8개."},
     },
-    "required": ["topic", "kicker", "title", "points", "caption", "hashtags"],
+    "required": ["topic", "kicker", "title", "lead", "points", "code", "caption", "hashtags"],
     "additionalProperties": False,
 }
 
@@ -131,6 +137,11 @@ def fill_template(copy: dict, index: int) -> str:
     points = "".join(f"<li>{html.escape(p)}</li>" for p in copy["points"])
     # title 만 <em> 태그를 허용 — 나머지는 이스케이프
     title = html.escape(copy["title"]).replace("&lt;em&gt;", "<em>").replace("&lt;/em&gt;", "</em>")
+    # 명령어 블록: 슬래시로 시작하는 줄의 명령 부분만 액센트 색
+    code = "\n".join(
+        re.sub(r"^(/\S+)", r'<span class="p">\1</span>', html.escape(line))
+        for line in copy.get("code", [])
+    )
 
     page_html = (ROOT / "template.html").read_text(encoding="utf-8")
     for key, value in {
@@ -138,7 +149,9 @@ def fill_template(copy: dict, index: int) -> str:
         "{{KICKER}}": html.escape(copy["kicker"]),
         "{{TITLE}}": title,
         "{{TITLE_CLASS}}": "long" if len(copy["title"].replace("<em>", "").replace("</em>", "")) > 18 else "",
+        "{{LEAD}}": html.escape(copy.get("lead", "")),
         "{{POINTS}}": points,
+        "{{CODE}}": code,
         "{{HANDLE}}": html.escape(CONFIG["handle"]),
         "{{INDEX}}": f"{index:03d}",
     }.items():
