@@ -54,7 +54,7 @@ SCHEMA = {
             "description": "카드 하단 명령어 블록. 설치 명령이나 사용 예시. 각 줄 46자 이내, 최대 4줄.",
             "items": {"type": "string"},
         },
-        "caption": {"type": "string", "description": "인스타 캡션. 3~5문장. 카드 내용을 풀어 설명하고 마지막에 질문 하나."},
+        "caption": {"type": "string", "description": "인스타 캡션. config 의 caption_spec 에 있는 구조와 금지 목록을 그대로 따를 것."},
         "hashtags": {"type": "array", "items": {"type": "string"}, "description": "# 포함 해시태그 5~8개."},
     },
     "required": ["topic", "type", "kicker", "title", "lead", "points", "code", "caption", "hashtags"],
