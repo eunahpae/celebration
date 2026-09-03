@@ -267,7 +267,7 @@ def cmd_generate(dry_run: bool) -> None:
 
     hashtags = list(dict.fromkeys(copy["hashtags"] + CONFIG["fixed_hashtags"]))
     payload = {
-        "date": slug,
+        "date": today_slug(),
         "index": index,
         "topic": copy["topic"],
         "title": copy["title"],
