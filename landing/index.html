@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>배은아 · EunAh</title>
+<meta name="description" content="웹 시스템 기획·개발">
+<meta property="og:type" content="website">
+<meta property="og:title" content="배은아 · EunAh">
+<meta property="og:description" content="웹 시스템 기획·개발">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f6f3ee;
+  --ink: #1f1c19;
+  --muted: #8a8279;
+  --line: rgba(31, 28, 25, 0.14);
+  --accent: #8c5a3c;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151412;
+    --ink: #eeeae4;
+    --muted: #8f887f;
+    --line: rgba(238, 234, 228, 0.16);
+    --accent: #d2a07e;
+  }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  -webkit-font-smoothing: antialiased;
+}
+main { width: 100%; max-width: 420px; text-align: center; }
+.en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+h1 {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 700;
+  font-size: clamp(40px, 12vw, 56px);
+  letter-spacing: 0.12em;
+  margin: 6px 0 18px;
+  padding-left: 0.12em;
+}
+.role { font-size: 16px; color: var(--muted); letter-spacing: 0.04em; }
+.rule { width: 32px; height: 1px; background: var(--line); margin: 40px auto; }
+.mail {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 44px; padding: 0 22px;
+  border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 400;
+  transition: border-color 0.2s, color 0.2s;
+}
+.mail:hover, .mail:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+.mail svg { width: 16px; height: 16px; flex-shrink: 0; }
+footer { margin-top: 56px; font-size: 12px; color: var(--muted); letter-spacing: 0.08em; }
+@media (prefers-reduced-motion: no-preference) {
+  main > * { animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  main > :nth-child(2) { animation-delay: 0.08s; }
+  main > :nth-child(3) { animation-delay: 0.16s; }
+  main > :nth-child(n+4) { animation-delay: 0.26s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+}
+</style>
+</head>
+<body>
+<main>
+  <p class="en">EunAh</p>
+  <h1>배은아</h1>
+  <p class="role">웹 시스템 기획·개발</p>
+  <div class="rule"></div>
+  <a class="mail" href="mailto:eunahp86@gmail.com">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+    eunahp86@gmail.com
+  </a>
+  <footer>© <span id="y">2026</span> EunAh</footer>
+</main>
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>

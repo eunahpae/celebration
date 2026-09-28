@@ -10,7 +10,7 @@ function out(int $code, array $body): void {
 
 $a = $_GET['a'] ?? '';
 
-// 참석과 축하 메시지 모두 행사별로 저장된다. 유효한 키는 invite.php 가 정한다
+// 축하 메시지는 행사별로 저장된다. 유효한 키는 invite.php 가 정한다
 function event_key(string $v): string {
     if (!isset(invite()['events'][$v])) out(400, ['error' => '잘못된 초대장 주소입니다.']);
     return $v;
@@ -29,19 +29,6 @@ try {
     if (!$post) out(405, ['error' => '잘못된 요청입니다.']);
     // 사람 눈에 안 보이는 칸. 채워져 있으면 스팸 봇
     if (($_POST['website'] ?? '') !== '') out(200, ['ok' => true]);
-
-    if ($a === 'rsvp') {
-        $event = event_key((string)($_POST['event'] ?? ''));
-        $name = field('name', 30);
-        $attend = $_POST['attend'] ?? '';
-        $count = (int)($_POST['headcount'] ?? 0);
-        if ($name === null) out(400, ['error' => '성함을 30자 이내로 적어주세요.']);
-        if ($attend !== '1' && $attend !== '0') out(400, ['error' => '참석 여부를 골라주세요.']);
-        if ($attend === '1' && ($count < 1 || $count > 20)) out(400, ['error' => '인원을 1~20명 사이로 적어주세요.']);
-        db()->prepare('INSERT INTO chilsun_rsvp (event, name, attend, headcount, ip, created_at) VALUES (?, ?, ?, ?, ?, ?)')
-            ->execute([$event, $name, (int)$attend, $attend === '1' ? $count : 0, client_ip(), now()]);
-        out(200, ['ok' => true]);
-    }
 
     if ($a === 'guestbook') {
         $event = event_key((string)($_POST['event'] ?? ''));

@@ -164,7 +164,7 @@ h2 {
 .item-main { font-size: 15px; word-break: break-all; }
 .item .btn { min-height: 38px; padding: 0 14px; font-size: 13px; flex-shrink: 0; }
 
-/* 참석 여부 · 축하 메시지 */
+/* 축하 메시지 */
 .form { text-align: left; display: grid; gap: 12px; }
 .form label { font-size: 13px; color: var(--muted); display: grid; gap: 4px; }
 .form input, .form textarea {
@@ -173,21 +173,9 @@ h2 {
   width: 100%;
 }
 .form textarea { resize: vertical; min-height: 96px; }
-.choice { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.choice label { position: relative; }
-.choice input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.choice span {
-  display: grid; place-items: center; min-height: 46px;
-  border: 1px solid var(--line); border-radius: 10px; background: var(--paper);
-  font-size: 15px; color: var(--ink); cursor: pointer;
-}
-.choice input:checked + span { background: var(--red); border-color: var(--red); color: #fff; }
-.choice input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
 .hp { position: absolute; left: -9999px; }
-.form [hidden] { display: none; }
 .form .btn { width: 100%; min-height: 48px; font-size: 15px; }
 .form-msg { font-size: 14px; min-height: 1.4em; text-align: center; color: var(--red); }
-.done { font-size: 15px; padding: 24px 0; }
 .gb-list { margin-top: 32px; text-align: left; display: grid; gap: 10px; }
 .gb-item { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
 .gb-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
@@ -264,23 +252,6 @@ footer { padding: 40px 28px 64px; text-align: center; color: var(--muted); font-
       <button class="btn" id="copyAddr">주소 복사</button>
     </div>
     <dl class="guide" id="guide"></dl>
-  </section>
-
-  <section class="reveal">
-    <div class="eyebrow">RSVP</div>
-    <h2>참석 여부를 알려주세요</h2>
-    <form class="form" id="rsvpForm">
-      <label>성함<input name="name" maxlength="30" required autocomplete="name"></label>
-      <div class="choice" role="radiogroup" aria-label="참석 여부">
-        <label><input type="radio" name="attend" value="1" required><span>참석합니다</span></label>
-        <label><input type="radio" name="attend" value="0"><span>참석이 어렵습니다</span></label>
-      </div>
-      <label id="countRow">함께 오시는 인원 (본인 포함)<input name="headcount" type="number" inputmode="numeric" min="1" max="20" value="1"></label>
-      <input type="hidden" name="event" value="<?= h($key) ?>">
-      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="btn primary">보내기</button>
-      <div class="form-msg" role="status"></div>
-    </form>
   </section>
 
   <section class="reveal">
@@ -423,25 +394,6 @@ async function post(action, body) {
   if (!res.ok || data.error) throw new Error(data.error || '잠시 문제가 생겼습니다.');
   return data;
 }
-
-// 참석 여부
-const rsvp = $('rsvpForm');
-rsvp.addEventListener('change', () => {
-  const no = rsvp.attend.value === '0';
-  $('countRow').hidden = no;
-  rsvp.headcount.disabled = no;
-});
-rsvp.onsubmit = async e => {
-  e.preventDefault();
-  const btn = rsvp.querySelector('button'), msg = rsvp.querySelector('.form-msg');
-  btn.disabled = true; msg.textContent = '';
-  try {
-    await post('rsvp', new FormData(rsvp));
-    rsvp.outerHTML = `<div class="done">${rsvp.attend.value === '1' ? '알려주셔서 감사합니다.<br>잔치에서 뵙겠습니다.' : '마음 전해주셔서 감사합니다.'}</div>`;
-  } catch (err) {
-    msg.textContent = err.message; btn.disabled = false;
-  }
-};
 
 // 축하 메시지
 const gb = $('gbForm');
