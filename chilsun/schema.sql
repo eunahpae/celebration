@@ -1,0 +1,23 @@
+-- 카페24 phpMyAdmin 의 SQL 탭에 붙여넣어 한 번 실행한다
+CREATE TABLE IF NOT EXISTS chilsun_rsvp (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  event VARCHAR(20) NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  attend TINYINT(1) NOT NULL,
+  headcount TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  memo VARCHAR(200) NOT NULL DEFAULT '',
+  ip VARCHAR(45) NOT NULL DEFAULT '',
+  created_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS chilsun_guestbook (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  event VARCHAR(20) NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  message VARCHAR(500) NOT NULL,
+  pw_hash VARCHAR(255) NOT NULL,
+  ip VARCHAR(45) NOT NULL DEFAULT '',
+  created_at DATETIME NOT NULL,
+  KEY idx_ip_time (ip, created_at),
+  KEY idx_event (event, id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

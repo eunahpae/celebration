@@ -3,3 +3,9 @@
 desktop.ini
 __pycache__/
 *.pyc
+
+# 칠순 초대장: 공개 저장소라 사진·DB 설정은 올리지 않는다
+parents.png
+chilsun/images/
+chilsun/config.php
+chilsun/invite.php

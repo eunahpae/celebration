@@ -1,0 +1,19 @@
+# note: Options -Indexes 는 AllowOverride 설정에 따라 500 을 내므로 넣지 않는다
+# note: Apache 2.2/2.4 어느 쪽이어도 500 이 나지 않게 모듈 확인 후 적용
+<FilesMatch "^(config\.php|config\.sample\.php|db\.php|invite\.php|schema\.sql)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# /chilsun/chinga 같은 행사 주소를 index.php?e=chinga 로 넘긴다. 어떤 키가 유효한지는 index.php 가 판단한다
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^([a-z]+)/?$ index.php?e=$1 [L,QSA]
+</IfModule>
